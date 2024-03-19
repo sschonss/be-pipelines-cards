@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PipelineController;
 use App\Http\Middleware;
 
 /*
@@ -25,4 +26,8 @@ Route::get('register/google/callback', [AuthController::class, 'handleGoogleCall
 Route::middleware('jwt')->group(function () {
     Route::get('user', [AuthController::class, 'user'])->name('user');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::middleware('jwt')->group(function () {
+    Route::resource('pipelines', PipelineController::class);
 });

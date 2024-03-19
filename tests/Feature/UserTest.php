@@ -6,7 +6,7 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_register_user(): void
     {
