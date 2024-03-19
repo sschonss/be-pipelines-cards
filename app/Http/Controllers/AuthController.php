@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -49,5 +50,33 @@ class AuthController extends Controller
     {
         return response()->json(JWTAuth::user());
     }
+
+    public function redirectToGoogle(): \Illuminate\Http\JsonResponse | \Illuminate\Http\RedirectResponse
+    {
+        $redirect = Socialite::driver('google')->redirect();
+
+        if (!$redirect) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $redirect;
+
+    }
+
+    public function handleGoogleCallback(): \Illuminate\Http\JsonResponse
+    {
+        $user = Socialite::driver('google')->user();
+
+        $user = User::firstOrCreate(
+            ['email' => $user->email],
+            ['name' => $user->name, 'email' => $user->email, 'password' => Hash::make('password')]
+        );
+
+        $token = JWTAuth::fromUser($user);
+
+        return $this->respondWithToken($token);
+    }
+
+
 }
 
