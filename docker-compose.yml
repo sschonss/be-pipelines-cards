@@ -22,7 +22,7 @@ services:
         networks:
             - sail
         depends_on:
-            - mysql
+            - postgres
             - redis
     laravel.test2:
         container_name: api-02
@@ -47,9 +47,9 @@ services:
         networks:
             - sail
         depends_on:
-            - mysql
+            - postgres
             - redis
-    mysql:
+    postgres:
         container_name: database-api
         image: 'postgres:latest'
         ports:
