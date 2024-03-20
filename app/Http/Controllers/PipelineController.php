@@ -6,6 +6,7 @@ use App\Http\Requests\StorePipelineRequest;
 use App\Http\Requests\UpdatePipelineRequest;
 use App\Repositories\PipelineRepository;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class PipelineController extends Controller
 {
@@ -18,30 +19,66 @@ class PipelineController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->pipelineRepository->all());
+        try {
+            $pipelines = $this->pipelineRepository->all();
+            return response()->json($pipelines);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error retrieving pipelines: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function store(StorePipelineRequest $request): JsonResponse
     {
-        $this->pipelineRepository->create($request->validated());
-        return response()->json(['message' => 'Pipeline created successfully'], 201);
+        try {
+            $this->pipelineRepository->create($request->validated());
+            return response()->json(['message' => 'Pipeline created successfully'], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error creating pipeline: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function show(int $id): JsonResponse
     {
-        $pipeline = $this->pipelineRepository->find($id);
-        return response()->json($pipeline);
+        try {
+            $pipeline = $this->pipelineRepository->find($id);
+            if (!$pipeline) {
+                return response()->json(['message' => 'Pipeline not found'], Response::HTTP_NOT_FOUND);
+            }
+            return response()->json($pipeline);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error retrieving pipeline: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function update(UpdatePipelineRequest $request, int $id): JsonResponse
     {
-        $this->pipelineRepository->update($request->validated(), $id);
-        return response()->json(['message' => 'Pipeline updated successfully'], 200);
+        try {
+            $pipeline = $this->pipelineRepository->find($id);
+            if (!$pipeline) {
+                return response()->json(['message' => 'Pipeline not found'], Response::HTTP_NOT_FOUND);
+            }
+            $this->pipelineRepository->update($request->validated(), $pipeline);
+            return response()->json(['message' => 'Pipeline updated successfully'], Response::HTTP_OK);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_FORBIDDEN);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error updating pipeline: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $this->pipelineRepository->delete($id);
-        return response()->json(['message' => 'Pipeline deleted successfully'], 200);
+        try {
+            $pipeline = $this->pipelineRepository->find($id);
+            if (!$pipeline) {
+                return response()->json(['message' => 'Pipeline not found'], Response::HTTP_NOT_FOUND);
+            }
+            $this->pipelineRepository->delete($pipeline);
+            return response()->json(['message' => 'Pipeline deleted successfully'], Response::HTTP_OK);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_FORBIDDEN);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error deleting pipeline: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -21,7 +21,7 @@ class PipelineRepository
 
     public function find(int $id)
     {
-        return Pipeline::where('user_id', Auth::id())->findOrFail($id);
+        return Pipeline::where('user_id', Auth::id())->findOrFail($id) ?? null;
     }
 
     public function update(array $data, Pipeline $pipeline)
@@ -45,7 +45,7 @@ class PipelineRepository
     private function authorizePipelineOwnership(Pipeline $pipeline): void
     {
         if ($pipeline->user_id !== Auth::id()) {
-            throw new \InvalidArgumentException('User does not own this pipeline');
+            throw new \InvalidArgumentException('User does not own this pipeline', 403);
         }
     }
 }

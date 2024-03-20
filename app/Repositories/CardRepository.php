@@ -21,7 +21,7 @@ class CardRepository
 
     public function find(int $id)
     {
-        return Card::where('user_id', Auth::id())->findOrFail($id);
+        return Card::where('user_id', Auth::id())->findOrFail($id) ?? null;
     }
 
     public function update(array $data, Card $card): void
@@ -59,7 +59,7 @@ class CardRepository
     private function authorizeCardOwnership(Card $card): void
     {
         if ($card->user_id !== Auth::id()) {
-            throw new \InvalidArgumentException('User does not own this card');
+            throw new \InvalidArgumentException('User does not own this card', 403);
         }
     }
 }
