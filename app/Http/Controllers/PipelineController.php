@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePipelineRequest;
 use App\Http\Requests\UpdatePipelineRequest;
+use App\Models\Card;
 use App\Models\Pipeline;
 
 class PipelineController extends Controller
@@ -77,8 +78,12 @@ class PipelineController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
+        if (Card::where('pipeline_id', $id)->first()) {
+            return response()->json(['message' => 'Pipeline is in use'], 400);
+        }
+
         try {
             Pipeline::find($id)->delete();
             return response()->json(['message' => 'Pipeline deleted successfully'], 200);

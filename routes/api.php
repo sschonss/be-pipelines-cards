@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController as AuthLogin;
+use App\Http\Controllers\CardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PipelineController;
 use App\Http\Middleware;
@@ -30,4 +31,8 @@ Route::middleware('jwt')->group(function () {
 
 Route::middleware('jwt')->group(function () {
     Route::resource('pipelines', PipelineController::class);
+    Route::resource('cards', CardController::class);
+    Route::put('cards/{card}/next', [CardController::class, 'nextStage']);
 });
+
+
