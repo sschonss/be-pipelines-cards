@@ -33,4 +33,16 @@ class Pipeline extends Model
     {
         return $this->orderBy('id', 'desc')->first()->id ?? null;
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function getIDFirstPipeline(): int
+    {
+        try {
+          return  $this->orderBy('id', 'asc')->first()->id;
+        } catch (\Exception $e) {
+            throw new \Exception('Error getting first pipeline');
+        }
+    }
 }
