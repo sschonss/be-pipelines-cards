@@ -69,4 +69,18 @@ class PipelineTest extends TestCase
         $this->assertNull(Pipeline::find($pipeline->id));
     }
 
+    public function test_associate_user_to_pipeline()
+    {
+        $user = User::first();
+        $pipeline = new Pipeline();
+        $pipeline->name = 'Test Pipeline';
+        $pipeline->description = 'Test Description';
+        $pipeline->user_id = $user->id;
+        $pipeline->save();
+
+        $this->assertEquals($user->id, $pipeline->user_id);
+
+        $pipeline->delete();
+    }
+
 }
