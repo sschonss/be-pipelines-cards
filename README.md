@@ -90,6 +90,14 @@ Esse projeto utiliza as seguintes ferramentas junto com o Docker:
 
 [API.md](API.md)
 
+## Autenticação
+
+A autenticação é feita com JWT. Para fazer login, você precisa enviar um POST para `/api/login` com o email e senha do usuário.
+
+Sabemos que existem varios Starter Kits para autenticação, mas preferi fazer a autenticação dessa maneira para ser mais simples.
+
+Poderiamos usar o Sanctum, Passport, etc, mas para esse projeto, o JWT é suficiente.
+
 ## Testes
 
 Para rodar os testes, execute o comando:
