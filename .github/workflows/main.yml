@@ -1,6 +1,6 @@
 # GitHub Action for Laravel with Postgres and Redis
 name: Testing API with Postgres, Redis and tests
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   laravel:
     name: Laravel (PHP ${{ matrix.php-versions }})
