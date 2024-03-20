@@ -25,16 +25,19 @@ class Card extends Model
         'deleted_at',
     ];
 
-    public function nextStage(Card $card): void
+    public function nextStage(Card $card): ?int
     {
         $actualPipeline = $card->pipeline_id;
         $nextPipeline = Pipeline::where('pipeline_last_id', $actualPipeline)->first();
         if($nextPipeline){
-            $card->pipeline_id = $nextPipeline->id;
+             $card->pipeline_id = $nextPipeline->id;
+             $card->save();
+             return $nextPipeline->id;
         }else{
             $card->finished_at = now();
+            $card->save();
+            return null;
         }
-        $card->save();
     }
 
 

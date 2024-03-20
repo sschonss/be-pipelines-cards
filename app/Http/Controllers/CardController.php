@@ -99,8 +99,11 @@ class CardController extends Controller
             return response()->json(['message' => 'Card not found'], 404);
         }
 
-        $card->nextStage($card);
-
-        return response()->json(['message' => 'Card updated successfully'], 200);
+        $stage = $card->nextStage($card);
+        if($stage){
+            return response()->json(['message' => 'Card moved to next stage', 'stage' => $stage], 200);
+        }else{
+            return response()->json(['message' => 'Card finished', 'stage' => null], 200);
+        }
     }
 }

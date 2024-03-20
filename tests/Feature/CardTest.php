@@ -83,4 +83,40 @@ class CardTest extends TestCase
         $this->assertNull(Card::find($card->id));
     }
 
+    public function test_next_stage()
+    {
+        $card = new Card();
+        $card->name = 'Teste';
+        $card->description = 'Teste';
+        $card->user_id = 1;
+        $card->pipeline_id = 1;
+        $card->save();
+
+        $pipeline = new Pipeline();
+        $pipeline->name = 'Teste 2';
+        $pipeline->description = 'Teste 2';
+        $pipeline->user_id = 1;
+        $pipeline->pipeline_last_id = 1;
+        $pipeline->save();
+
+        $this->assertEquals(2, $card->nextStage($card));
+
+        $card->delete();
+        $pipeline->delete();
+    }
+
+    public function test_next_stage_finished()
+    {
+        $card = new Card();
+        $card->name = 'Teste';
+        $card->description = 'Teste';
+        $card->user_id = 1;
+        $card->pipeline_id = 1;
+        $card->save();
+
+        $this->assertNull($card->nextStage($card));
+
+        $card->delete();
+    }
+
 }
