@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePipelineRequest;
 use App\Http\Requests\UpdatePipelineRequest;
 use App\Models\Pipeline;
-use Illuminate\Http\Request;
 
 class PipelineController extends Controller
 {
@@ -44,13 +43,17 @@ class PipelineController extends Controller
      */
     public function show(int $id): \Illuminate\Http\JsonResponse
     {
-        return response()->json(Pipeline::find($id));
+        if (!Pipeline::find($id)) {
+            return response()->json(['message' => 'Pipeline not found'], 404);
+        }
+
+        return response()->json(Pipeline::find($id), 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePipelineRequest $request, int $id)
+    public function update(UpdatePipelineRequest $request, int $id): \Illuminate\Http\JsonResponse
     {
         $request->validated();
         $request->merge(
@@ -58,6 +61,10 @@ class PipelineController extends Controller
                 'user_id' => $this->getIDUserAuth(),
             ]
         );
+
+        if (!Pipeline::find($id)) {
+            return response()->json(['message' => 'Pipeline not found'], 404);
+        }
 
         try {
             Pipeline::find($id)->update($request->all());
@@ -73,7 +80,7 @@ class PipelineController extends Controller
     public function destroy(int $id)
     {
         try {
-            Pipeline::destroy($id);
+            Pipeline::find($id)->delete();
             return response()->json(['message' => 'Pipeline deleted successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error deleting pipeline'], 400);

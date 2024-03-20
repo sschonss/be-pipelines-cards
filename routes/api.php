@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthController as AuthLogin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PipelineController;
 use App\Http\Middleware;
@@ -16,16 +16,16 @@ use App\Http\Middleware;
 |
 */
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::get('login-google', [AuthController::class, 'redirectToGoogle']);
-Route::get('register-google', [AuthController::class, 'redirectToGoogle']);
-Route::get('login/google/callback', [AuthController::class, 'handleGoogleCallback']);
-Route::get('register/google/callback', [AuthController::class, 'handleGoogleCallback']);
+Route::post('login', [AuthLogin::class, 'login']);
+Route::post('register', [AuthLogin::class, 'register']);
+Route::get('login-google', [AuthLogin::class, 'redirectToGoogle']);
+Route::get('register-google', [AuthLogin::class, 'redirectToGoogle']);
+Route::get('login/google/callback', [AuthLogin::class, 'handleGoogleCallback']);
+Route::get('register/google/callback', [AuthLogin::class, 'handleGoogleCallback']);
 
 Route::middleware('jwt')->group(function () {
-    Route::get('user', [AuthController::class, 'user'])->name('user');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('user', [AuthLogin::class, 'user'])->name('user');
+    Route::post('logout', [AuthLogin::class, 'logout'])->name('logout');
 });
 
 Route::middleware('jwt')->group(function () {

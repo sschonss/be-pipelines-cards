@@ -22,7 +22,7 @@ class UpdatePipelineRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:30',
+            'name' => 'string|max:30',
             'description' => 'string|max:80',
         ];
     }
@@ -35,7 +35,6 @@ class UpdatePipelineRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Name is required',
             'name.string' => 'Name must be a string',
             'name.max' => 'Name must be less than 30 characters',
             'description.string' => 'Description must be a string',

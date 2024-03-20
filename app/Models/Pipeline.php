@@ -4,16 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pipeline extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
         'description',
         'pipeline_last_id',
         'user_id',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -23,7 +31,6 @@ class Pipeline extends Model
 
     public function getIDLastPipeline(): ?int
     {
-        return $this->orderBy('id', 'desc')->first()->id;
+        return $this->orderBy('id', 'desc')->first()->id ?? null;
     }
-
 }
