@@ -61,6 +61,7 @@ services:
             POSTGRES_PASSWORD: '${DB_PASSWORD}'
         volumes:
             - 'sail-postgres:/var/lib/postgresql/data'
+            - './docker/postgres:/docker-entrypoint-initdb.d'
         networks:
             - sail
         healthcheck:
