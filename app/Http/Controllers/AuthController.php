@@ -69,12 +69,12 @@ class AuthController extends Controller
 
     public function handleGoogleCallback(): \Illuminate\Http\JsonResponse
     {
-        $user = Socialite::driver('google')->user();
-
-        $user = User::firstOrCreate(
-            ['email' => $user->email],
-            ['name' => $user->name, 'email' => $user->email, 'password' => Hash::make('password')]
-        );
+        $googleUser = Socialite::driver('google')->user();
+        $user = User::where('email', $googleUser->email)->first();
+        if(!$user)
+        {
+            $user = User::create(['name' => $googleUser->name, 'email' => $googleUser->email, 'password' => Hash::make(rand(100000,999999))]);
+        }
 
         $token = JWTAuth::fromUser($user);
 
