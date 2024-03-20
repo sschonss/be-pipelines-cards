@@ -109,6 +109,14 @@ Como estamos usando Nginx, podemos facilmente adicionar balanceamento de carga.
 
 Na pasta `docker` temos o arquivo `nginx.conf` que é o arquivo de configuração do Nginx, e nele já temos um exemplo de balanceamento de carga.
 
+## Redis
+
+O Redis pode ser utilizado para cache, filas, etc. Nesse projeto, ele é utilizado para armazenar a sessão do usuário.
+
+Lembre-se de configurar o arquivo `.env` para utilizar o Redis.
+
+Usamos o Redis pois precisamos a configuração de sessão do usuário padrão do Laravel é arquivos e como estamos usando Load Balancing, precisamos de uma maneira de compartilhar a sessão entre os servidores.
+
 ## Alternativas para Rodar o Projeto
 
 Existem outras maneiras de rodar o projeto, como por exemplo:
