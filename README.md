@@ -103,4 +103,8 @@ Esse projeto utiliza o GitHub Actions para CI. O arquivo de configuração está
 
 Esse arquivo é responsável por rodar os testes e buildar a aplicação, garantindo que o código está funcionando corretamente.
 
+## Balanceamento de carga
 
+Como estamos usando Nginx, podemos facilmente adicionar balanceamento de carga.
+
+Na pasta `docker` temos o arquivo `nginx.conf` que é o arquivo de configuração do Nginx, e nele já temos um exemplo de balanceamento de carga.
