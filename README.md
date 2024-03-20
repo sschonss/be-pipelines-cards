@@ -108,3 +108,10 @@ Esse arquivo é responsável por rodar os testes e buildar a aplicação, garant
 Como estamos usando Nginx, podemos facilmente adicionar balanceamento de carga.
 
 Na pasta `docker` temos o arquivo `nginx.conf` que é o arquivo de configuração do Nginx, e nele já temos um exemplo de balanceamento de carga.
+
+## Alternativas para Rodar o Projeto
+
+Existem outras maneiras de rodar o projeto, como por exemplo:
+
+- Usar o Composer para rodar o Laravel: [Laravel](https://laravel.com/docs/8.x/installation)
+- Usar Docker sem o Sail, como nesse exemplo que eu fiz: [PHP Docker](https://github.com/sschonss/tutorial-docker-laravel-mariadb)
