@@ -33,6 +33,10 @@ class AuthController extends Controller
     public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = new User();
+        $validateEmail = $user->emailExists($request->email);
+        if ($validateEmail) {
+            return response()->json(['error' => 'Email already exists'], 400);
+        }
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
