@@ -53,5 +53,10 @@ class User extends IAuthenticatable implements JWTSubject
         return [];
     }
 
+    public function emailExists($email): bool
+    {
+        return $this->where('email', $email)->exists();
+    }
+
 
 }

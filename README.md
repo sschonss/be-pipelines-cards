@@ -86,6 +86,9 @@ Esse projeto utiliza as seguintes ferramentas junto com o Docker:
 
 [PipeCards API](https://documenter.getpostman.com/view/12399484/2sA358cQxW)
 
+## Documentação da API (Markdown)
+
+[API.md](API.md)
 
 ## Testes
 
