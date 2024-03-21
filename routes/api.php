@@ -20,9 +20,7 @@ use App\Http\Middleware;
 Route::post('login', [AuthLogin::class, 'login']);
 Route::post('register', [AuthLogin::class, 'register']);
 Route::get('login-google', [AuthLogin::class, 'redirectToGoogle']);
-Route::get('register-google', [AuthLogin::class, 'redirectToGoogle']);
 Route::get('login/google/callback', [AuthLogin::class, 'handleGoogleCallback']);
-Route::get('register/google/callback', [AuthLogin::class, 'handleGoogleCallback']);
 
 Route::middleware('jwt')->group(function () {
     Route::get('user', [AuthLogin::class, 'user'])->name('user');
